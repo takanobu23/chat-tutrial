@@ -1,0 +1,21 @@
+<a href="/">
+<h1>LOGO</h1>
+</a>
+
+
+
+<form method = "GET" action="{% url 'home' %}">
+  <!-- 上のformタグのactionメソッドには送信先を書いてる。この場合は'home'にだからそっからviewとかにもいく -->
+  <input type="text" name = "q" placeholder = "Search Rooms..." />
+  <!-- inputにはtypeによって様々だがこの場合typeがtextのため、nameに入力される値は初期値になる (たぶんqだから...なんだ...わからんな...)これhtmlのデフォルトの値だわ-->
+</form>
+
+<!-- この下の記述いいよね、if分使って何を表記するか書いてある。 -->
+{% if request.user.is_authenticated %}
+<p>helo {{request.user}}</p>
+<a href="{% url 'logout' %}">Logout</a>
+{% else %}
+<a href="{% url 'login' %}">Login</a>
+{% endif %}
+
+<hr>

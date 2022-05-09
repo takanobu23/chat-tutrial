@@ -1,0 +1,58 @@
+{% extends 'main.html' %}
+
+
+{% block content%}
+
+<style>
+  .home-container{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+  }
+</style>
+
+<div class = 'home-container'>
+
+  <div>
+    <h3>Brows Topics</h3>
+    <hr>
+
+    <div>
+      <a href="{% url 'home' %}">All</a>
+      <!-- この?qは何ですか？ -->
+    </div>
+
+    {% for topic in topics %}
+    <div>
+      <a href="{% url 'home' %}?q={{topic.name}}">{{topic.name}}</a>
+      <!-- この?qは何ですか？ -->
+    </div>
+    {% endfor %}
+  </div>
+
+  <div>
+    <h5>{{room_count}}rooms available</h5>
+    <a href="{% url 'create-room' %}">Create Room</a>
+    <div>
+      {% for room in rooms %}
+        <div>
+          {% if request.user == room.host %}
+          <a href="{% url 'update-room' room.id %}">Edit</a>
+          <a href="{% url 'delete-room' room.id %}">delete</a>
+          {% endif %}
+          <span>@{{room.host.username}}</span>
+          <!-- room.host.username は models.py の中で定義した Room の中の host の中に djangoに備え付けの User ってのが入ってて、その中のfieldとしてusernameがあるって感じ。
+          参照元はメモにあるんでどうぞ-->
+          <h5>
+            {{room.id}} -- <a href="{% url 'room' room.id %}">{{room.name}}</a>
+          </h5>
+          <small>{{room.topic.name}}</small>
+          <!-- これも上の解説と同じ感じで、Room の中のtopicに他に定義してたTopicってやつの中にあるnameを表示させてる -->
+          <hr>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+   
+</div>
+
+{% endblock %}
